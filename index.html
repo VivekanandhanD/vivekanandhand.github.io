@@ -49,6 +49,9 @@
 		aside{
 			top: 80px;
 		}
+		li>a{
+			text-decoration: None;
+		}
 	</style>
 
 	<script src="jq/jquery-3.5.1.min.js"></script>
@@ -68,8 +71,10 @@
 			render(){
 				return (
 					<li className="mdc-list-item" role="menuitem">
-						<span className="mdc-list-item__ripple"></span>
-						<span className="mdc-list-item__text">{this.props.name}</span>
+						<a href={this.props.url}>
+							<span className="mdc-list-item__ripple"></span>
+							<span className="mdc-list-item__text">{this.props.name}</span>
+						</a>
 					</li>
 				)
 			}
@@ -77,20 +82,53 @@
 		class ButtonMenu extends React.Component{
 			render(){
 				return (
-					<div className="mdc-menu-surface--anchor">
-						<button className="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button" title={this.props.title} onClick={openMenu}>
+					<div className="nav-bar-menus mdc-menu-surface--anchor">
+						<button className="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button" title={this.props.title}>
 							<span className="material-icons">
 								{this.props.name}
 							</span>
 						</button>
-						<div className="mdc-menu mdc-menu-surface ">
+						<div id={this.props.name} className="mdc-menu mdc-menu-surface ">
 							<ul className="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabIndex="-1">
 								<MenuItem name="Profile" />
-								<MenuItem name="Logout" />
+								<MenuItem name="Logout" url="logout"/>
 							</ul>
 						</div>
 					</div>
 				)
+			}
+		}
+		class NavMenu extends React.Component{
+			render(){
+				var menus = this.props.menus;
+				var menuComp = [];
+				if(menus){
+					menus = menus.split(",");
+					for(var i=0; i < menus.length; i++){
+						var name = menus[i].split("-")[0];
+						var url = menus[i].split("-")[1];
+						menuComp.push(<MenuItem name={name} url={url} key={name} />)
+					}
+					var id = this.props.name.split(" ").join(" ");
+					return (
+						<div className="mdc-menu-surface--anchor">
+							<span className="nav-bar-menus mdc-list-item mdc-top-app-bar__title" title={this.props.name}>
+								{this.props.name}
+							</span>
+							<div id={id} className="mdc-menu mdc-menu-surface ">
+								<ul className="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabIndex="-1">
+									{menuComp}
+								</ul>
+							</div>
+						</div>
+					)
+				} else{
+					return(
+						<a className="nav-bar-menus mdc-list-item mdc-top-app-bar__title" title={this.props.name} href={this.props.url}>
+							{this.props.name}
+						</a>
+					)
+				}
 			}
 		}
 		class Navbar extends React.Component{
@@ -103,6 +141,10 @@
 								<span className="mdc-top-app-bar__title">{this.props.appname}</span>
 							</section>
 							<section className="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+								<NavMenu name="Home" url="#"/>
+								<NavMenu name="Dashboard"  url="#"/>
+								<NavMenu name="Master" menus="Service Provider-#,Master Details-#,Statutory Details-#,User Management-#"/>
+								<NavMenu name="Transaction" menus="Create Litigations-#,Litigation Closure-#,Approve Litigations-#,Reassign User-#"/>
 								<Button name="settings" title="Settings"/>
 								<Button name="notification_important" title="Notifications"/>
 								<ButtonMenu name="person" title="User"/>
@@ -184,21 +226,39 @@
 	</main>
 	<script>
 		var menu;
+		var menus = {};
 		var drawer;
 		$(document).ready(function() {
 			drawer = new mdc.drawer.MDCDrawer(document.querySelector('.mdc-drawer'));
-			menu = new mdc.menu.MDCMenu(document.querySelector('.mdc-menu'));
-			var MDCTopAppBar = mdc.topAppBar.MDCTopAppBar;
-			var topAppBarElement = document.querySelector('.mdc-top-app-bar');
-			var topAppBar = new MDCTopAppBar(topAppBarElement);
 			drawer.open = true;
+			//menu = new mdc.menu.MDCMenu($('#user-menu')[0]);
+			var menux = document.querySelectorAll('.mdc-menu');
+			menux.forEach((i) => menus[i.id] = new mdc.menu.MDCMenu(i));
+			$(".nav-bar-menus").each(function(i, j){
+				$(j).on("click", function(){
+					var id = this.innerText;
+					if(menus[id]){
+						menus[id].open = !menus[id].open;
+					}
+				});
+			});
+			/*var MDCTopAppBar = mdc.topAppBar.MDCTopAppBar;
+			var topAppBarElement = document.querySelector('.mdc-top-app-bar');
+			var topAppBar = new MDCTopAppBar(topAppBarElement);*/
+			
 		});
-		function openMenu(){
-			menu.open = !menu.open;
+		function openMenu(id){
+			if(id){
+				console.log(menus);
+				var idx = id.split(" ").join("");
+				menus[idx].open = !menus[idx].open;
+			}
 		}
 		function openWidgetMenu(){
 			drawer.open = !drawer.open;
 		}
+	</script>
+	<script type="text/babel">
 	</script>
 </body>
 </html>
