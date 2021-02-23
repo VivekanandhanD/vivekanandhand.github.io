@@ -28,13 +28,31 @@
 		.mdc-card__media-content{
 			font-family: var(--mdc-typography-headline6-font-family, var(--mdc-typography-font-family, Roboto, sans-serif))
 		}
+		body {
+		  display: flex;
+		}
+		.mdc-drawer-app-content {
+		  flex: auto;
+		  overflow: auto;
+		  position: relative;
+		}
+		.main-content {
+		  overflow: auto;
+		  height: 100%;
+		}
+		.app-bar {
+		  position: absolute;
+		}
+		.mdc-top-app-bar {
+		  z-index: 7;
+		}
+		aside{
+			top: 80px;
+		}
 	</style>
 
 	<script src="jq/jquery-3.5.1.min.js"></script>
 	<script type="text/babel">
-		function openMenu(){
-			menu.open = true;
-		}
 		class Button extends React.Component{
 			render(){
 				return (
@@ -80,7 +98,7 @@
 				return (
 					<header className="mdc-top-app-bar mdc-top-app-bar--fixed ">
 						<div className="mdc-top-app-bar__row">
-							<section className="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+							<section className="mdc-top-app-bar__section mdc-top-app-bar__section--align-start" onClick={openWidgetMenu}>
 								<Button name="menu" title="Widgets"/>
 								<span className="mdc-top-app-bar__title">{this.props.appname}</span>
 							</section>
@@ -130,7 +148,33 @@
 <body>
 	<div id="navbar">
 	</div>
-	<main class="mdc-top-app-bar--fixed-adjust">
+	<aside class="mdc-drawer mdc-drawer--dismissible">
+		<div class="mdc-drawer__content">
+		  <nav class="mdc-list">
+			<a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page">
+			  <span class="mdc-list-item__ripple"></span>
+			  <i class="material-icons mdc-list-item__graphic" aria-hidden="true">insert_chart</i>
+			  <span class="mdc-list-item__text">Compliance History</span>
+			</a>
+			<a class="mdc-list-item" href="#">
+			  <span class="mdc-list-item__ripple"></span>
+			  <i class="material-icons mdc-list-item__graphic" aria-hidden="true">pie_chart</i>
+			  <span class="mdc-list-item__text">Compliance Status</span>
+			</a>
+			<a class="mdc-list-item" href="#">
+			  <span class="mdc-list-item__ripple"></span>
+			  <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bubble_chart</i>
+			  <span class="mdc-list-item__text">Bubble Chart</span>
+			</a>
+			<a class="mdc-list-item" href="#">
+			  <span class="mdc-list-item__ripple"></span>
+			  <i class="material-icons mdc-list-item__graphic" aria-hidden="true">stacked_bar_chart</i>
+			  <span class="mdc-list-item__text">Compliance Bar Chart</span>
+			</a>
+		  </nav>
+		</div>
+	  </aside>
+	<main class="mdc-top-app-bar--fixed-adjust mdc-drawer-app-content main-content">
 		<div class="mdc-layout-grid">
 			<div id="row1" class="mdc-layout-grid__inner">
 			</div>
@@ -140,13 +184,21 @@
 	</main>
 	<script>
 		var menu;
+		var drawer;
 		$(document).ready(function() {
+			drawer = new mdc.drawer.MDCDrawer(document.querySelector('.mdc-drawer'));
 			menu = new mdc.menu.MDCMenu(document.querySelector('.mdc-menu'));
+			var MDCTopAppBar = mdc.topAppBar.MDCTopAppBar;
+			var topAppBarElement = document.querySelector('.mdc-top-app-bar');
+			var topAppBar = new MDCTopAppBar(topAppBarElement);
+			drawer.open = true;
 		});
-		
-		//const MDCTopAppBar = mdc.topAppBar.MDCTopAppBar;
-		//const topAppBarElement = document.querySelector('.mdc-top-app-bar');
-		//const topAppBar = new MDCTopAppBar(topAppBarElement);
+		function openMenu(){
+			menu.open = !menu.open;
+		}
+		function openWidgetMenu(){
+			drawer.open = !drawer.open;
+		}
 	</script>
 </body>
 </html>
