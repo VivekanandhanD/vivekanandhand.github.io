@@ -115,12 +115,14 @@
 			<React.Fragment>
 				<Widget idy="dash0" name="Compliance History"/>
 				<Widget idy="dash1" name="Compliance Status"/>
-				<Widget idy="dash2" name="Bubble Chart"/>
 			</React.Fragment>
 			, $("#row1")[0]
 		);
 		ReactDOM.render(
-			<Widget idy="dash3" name="Compliance Bar Chart"/>
+			<React.Fragment>
+				<Widget idy="dash2" name="Bubble Chart"/>
+				<Widget idy="dash3" name="Compliance Bar Chart"/>
+			</React.Fragment>
 			, $("#row2")[0]
 		);
 	</script>
