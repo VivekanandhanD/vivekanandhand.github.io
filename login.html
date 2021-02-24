@@ -63,13 +63,21 @@
 		border-radius: 20px;
 	}
 	</style>
-	<script type="text/babel">
-	</script>
 </head>
 <body class="mdc-typography">
 	<div class="loginContainer mdc-elevation--z5">
 		<h2 class="mdc-typography--headline6" style="margin-top: -90px;margin-bottom: 50px;">Compfie</h2>
 		<h1 class="mdc-typography--headline6">LOGIN</h1>
+		<label class="mdc-text-field mdc-text-field--outlined">
+  <span class="mdc-notched-outline">
+    <span class="mdc-notched-outline__leading"></span>
+    <span class="mdc-notched-outline__notch">
+      <span class="mdc-floating-label" id="my-label1-id">Your Name</span>
+    </span>
+    <span class="mdc-notched-outline__trailing"></span>
+  </span>
+  <input type="text" class="mdc-text-field__input" aria-labelledby="my-label1-id">
+</label>
 		<label class="mdc-text-field mdc-text-field--outlined">
 		  <span class="mdc-notched-outline">
 			<span class="mdc-notched-outline__leading"></span>
@@ -112,41 +120,9 @@
         </button>
       </div>
     </div>
-	<script>
-      const showPassword = () => {
-        const passwordField = document.querySelector(".passwordField");
-        passwordField.type === "password" ? passwordField.type = "text" : passwordField.type = "password"
-      };
-    </script>
-    <!--div class="container center">
-        <div id="form" class="card">
-            <h4 class="card-header">Login</h4>
-            <div class="card-body" style="min-width:400px !important;">
-                <form method="post">
-                    {% csrf_token %}
-                    <div class="input-group">
-                        {{ form.username }}
-                        <div class="input-group-append"><i class="fas fa-at input-group-text"></i></div>
-                    </div>
-                    <div class="input-group" style="margin-top:10px;">
-                        {{ form.password }}
-                        <div class="input-group-append"><i class="fas fa-key input-group-text"></i></div>
-                    </div>
-                    <div class="input-group" style="margin-top:10px;">
-                        {{ form.shortname }}
-                        <div class="input-group-append"><i class="fas fa-home input-group-text"></i></div>
-                    </div>
-                    <button type="submit" id="login" class="toggle btn btn-primary btn-block">
-                        <span class="loading spinner-grow spinner-grow-sm" style="display:none;"></span>
-                        Login
-                    </button>
-                    <span class="toggle" onclick="forgetPassword();" style="margin-top:5px;cursor:pointer;text-decoration:underline;font-size:smaller;">
-                        Forgot Password?
-                    </span>
-                </form>
-            </div>
-        </div>
-    </div-->
+	<script type="text/babel">
+	const textField = new mdc.textField.MDCTextField(document.querySelector('.mdc-text-field'));
+	</script>
     <div id="bg"></div>
     <div id="loader" class='loading-indicator-spin'>
         <!--img class="star_logo_rotate" src="{% static '/img/star-logo.png' %}" -->
